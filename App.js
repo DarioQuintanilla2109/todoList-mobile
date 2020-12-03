@@ -2,7 +2,7 @@ import React from 'react'
 import { createStackNavigator } from 'react-navigation-stack'
 import { createAppContainer } from 'react-navigation'
 import IndexScreen from './src/screens/IndexScreen'
-import { Provider } from './src/context/TaskContext'
+import { Provider } from './src/context/BlogContext'
 
 const navigator = createStackNavigator(
   {
@@ -11,7 +11,7 @@ const navigator = createStackNavigator(
   {
     initialRouteName: 'Index',
     defaultNavigationOptions: {
-      title: 'Task',
+      title: 'Post',
     },
   }
 )

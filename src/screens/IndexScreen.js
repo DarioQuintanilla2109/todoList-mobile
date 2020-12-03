@@ -1,27 +1,37 @@
 import React, { useContext } from 'react'
-import { View, Text, StyleSheet, FlatList, Button } from 'react-native'
-import { Context } from '../context/TaskContext'
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Button,
+  TouchableOpacity,
+} from 'react-native'
+import { Context } from '../context/BlogContext'
 import { Feather } from '@expo/vector-icons'
 
 const IndexScreen = () => {
-  const { state, addTasks } = useContext(Context)
+  const { state, addBlogPost, deleteBlogPost } = useContext(Context)
 
   return (
     <View>
-      <Button title='Add Task' onPress={addTasks} />
+      <Button title='Add Post' onPress={addBlogPost} />
       <FlatList
         data={state}
-        keyExtractor={taskPosts => taskPosts.title}
-        //item contains our data obj
+        keyExtractor={blogPost => blogPost.title}
         renderItem={({ item }) => {
           return (
             <View style={styles.row}>
-              <Text>{item.title} </Text>
-              <Feather style={styles.trashStyle} name='trash' />
+              <Text style={styles.title}>
+                {item.title} - {item.id}
+              </Text>
+              <TouchableOpacity onPress={() => deleteBlogPost(item.id)}>
+                <Feather style={styles.icon} name='trash' />
+              </TouchableOpacity>
             </View>
           )
         }}
-      ></FlatList>
+      />
     </View>
   )
 }
@@ -31,10 +41,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: 20,
+    paddingHorizontal: 10,
     borderBottomWidth: 1,
+    borderColor: 'gray',
   },
-  trashStyle: {
-    fontSize: 26,
+  title: {
+    fontSize: 18,
+  },
+  icon: {
+    fontSize: 24,
     color: '#ffa62b',
   },
 })
