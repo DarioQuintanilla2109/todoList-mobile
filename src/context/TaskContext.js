@@ -1,22 +1,25 @@
-import React, { useState } from 'react'
-
-const TaskContext = React.createContext()
+import createDataContext from './createDataContext'
 
 //children getting passed down as a prop
-
 //provider gets information and will make available for components
-export const TaskProvider = ({ children }) => {
-  const [tasks, setTasks] = useState([])
-
-  const addTasks = () => {
-    setTasks([...tasks, { title: `Taks # ${tasks.length + 1}` }])
+//react automatically calls this function
+const taskReducer = (state, action) => {
+  switch (action.type) {
+    case 'addTask':
+      return [...state, { title: `Task number #${state.length + 1}` }]
+    default:
+      return state
   }
-
-  return (
-    <TaskContext.Provider value={{ data: tasks, addTasks: addTasks }}>
-      {children}
-    </TaskContext.Provider>
-  )
 }
 
-export default TaskContext
+const addTask = dispatch => {
+  return () => {
+    dispatch({ type: 'addTask' })
+  }
+}
+
+export const { Context, Provider } = createDataContext(
+  taskReducer,
+  { addTask },
+  []
+)
