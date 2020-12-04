@@ -6,11 +6,13 @@ import {
   FlatList,
   Button,
   TouchableOpacity,
+  Image,
 } from 'react-native'
 import { Context } from '../context/BlogContext'
 import { Feather } from '@expo/vector-icons'
+import { MIAMI } from '../images/ma'
 
-const IndexScreen = () => {
+const IndexScreen = ({ navigation }) => {
   const { state, addBlogPost, deleteBlogPost } = useContext(Context)
 
   return (
@@ -21,19 +23,38 @@ const IndexScreen = () => {
         keyExtractor={blogPost => blogPost.title}
         renderItem={({ item }) => {
           return (
-            <View style={styles.row}>
-              <Text style={styles.title}>
-                {item.title} - {item.id}
-              </Text>
-              <TouchableOpacity onPress={() => deleteBlogPost(item.id)}>
-                <Feather style={styles.icon} name='trash' />
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity //id post object
+              onPress={() => navigation.navigate('Show', { id: item.id })}
+            >
+              <View style={styles.row}>
+                <Text style={styles.title}>
+                  {item.title} - {item.id}
+                </Text>
+                <TouchableOpacity onPress={() => deleteBlogPost(item.id)}>
+                  <Feather style={styles.icon} name='trash' />
+                </TouchableOpacity>
+              </View>
+            </TouchableOpacity>
           )
         }}
       />
     </View>
   )
+}
+
+IndexScreen.navigationOptions = ({ navigation }) => {
+  return {
+    headerRight: () => (
+      <TouchableOpacity onPress={() => navigation.navigate('Create')}>
+        <Feather style={styles.iconAdd} name='plus' size={30} />
+      </TouchableOpacity>
+    ),
+    headerLeft: () => (
+      <TouchableOpacity onPress={() => navigation.navigate('Index')}>
+        <Image style={styles.imgStyle} source={MIAMI} />
+      </TouchableOpacity>
+    ),
+  }
 }
 
 const styles = StyleSheet.create({
@@ -49,8 +70,21 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   icon: {
-    fontSize: 24,
+    fontSize: 28,
     color: '#ffa62b',
+    marginRight: 5,
+  },
+  iconAdd: {
+    fontSize: 28,
+    color: '#ffa62b',
+    marginRight: 15,
+  },
+  imgStyle: {
+    height: 60,
+    width: 60,
+    marginLeft: 15,
+    borderRadius: 50,
+    marginBottom: 20,
   },
 })
 
