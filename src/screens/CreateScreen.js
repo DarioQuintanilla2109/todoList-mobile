@@ -13,6 +13,7 @@ import { Context } from '../context/BlogContext'
 const CreateScreen = ({ navigation }) => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
+  const { addBlogPost } = useContext(Context)
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -30,7 +31,14 @@ const CreateScreen = ({ navigation }) => {
           value={content}
           onChangeText={text => setContent(text)}
         />
-        <Button title='Add Post' />
+        <Button
+          title='Add Post'
+          onPress={() => {
+            addBlogPost(title, content, () => {
+              navigation.navigate('Index')
+            })
+          }}
+        />
       </View>
     </TouchableWithoutFeedback>
   )
