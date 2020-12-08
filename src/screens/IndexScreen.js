@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import {
   View,
   Text,
@@ -13,7 +13,21 @@ import { Feather } from '@expo/vector-icons'
 import { MIAMI } from '../images/ma'
 
 const IndexScreen = ({ navigation }) => {
-  const { state, deleteBlogPost } = useContext(Context)
+  const { state, deleteBlogPost, getBlogPosts } = useContext(Context)
+
+  useEffect(() => {
+    //on load fetch blog posts
+    getBlogPosts()
+    //once we are back on this screen fetch again
+    const listener = navigation.addListener('didFocus', () => {
+      getBlogPosts()
+    })
+
+    //only invoked when we terminate index screen-> for clean up purposes
+    return () => {
+      listener.remove()
+    }
+  }, [])
 
   return (
     <View>
