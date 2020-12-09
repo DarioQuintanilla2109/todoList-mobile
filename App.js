@@ -17,7 +17,7 @@ const navigator = createStackNavigator(
   {
     initialRouteName: 'Index',
     defaultNavigationOptions: {
-      title: 'Post',
+      title: 'TodoApp',
     },
   }
 )

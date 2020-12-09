@@ -16,9 +16,10 @@ const ShowScreen = ({ navigation }) => {
   //must get obj data from our navigation obj property getParam
   navigation.getParam('id')
   return (
-    <View>
-      <Text> {blogPost.title} </Text>
-      <Text> {blogPost.content} </Text>
+    <View style={styles.viewStyle}>
+      <Text style={styles.titleStyle}> {blogPost.title} </Text>
+
+      <Text style={styles.contentStyle}> {blogPost.content} </Text>
     </View>
   )
 }
@@ -42,6 +43,25 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: '#ffa62b',
     marginRight: 15,
+  },
+  viewStyle: {
+    flex: 1,
+  },
+  titleStyle: {
+    textAlign: 'center',
+    marginTop: 30,
+    fontSize: 22,
+    color: '#16697a',
+  },
+  contentStyle: {
+    textAlign: 'center',
+    marginTop: 30,
+    marginHorizontal: 10,
+
+    borderColor: '#ffa628',
+    borderRadius: 15,
+    backgroundColor: 'rgb(255,255,255)',
+    overflow: 'hidden',
   },
 })
 
