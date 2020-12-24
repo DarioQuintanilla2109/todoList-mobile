@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import {
   View,
   Text,
@@ -7,10 +7,13 @@ import {
   Button,
   TouchableOpacity,
   Image,
+  Animated,
+  TouchableHighlight,
 } from 'react-native'
 import { Context } from '../context/BlogContext'
 import { Feather } from '@expo/vector-icons'
 import { MIAMI } from '../images/ma'
+import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view'
 
 const IndexScreen = ({ navigation }) => {
   const { state, deleteBlogPost, getBlogPosts } = useContext(Context)
@@ -29,27 +32,93 @@ const IndexScreen = ({ navigation }) => {
     }
   }, [])
 
-  return (
-    <View>
-      <FlatList
-        data={state}
-        keyExtractor={blogPost => blogPost.title}
-        renderItem={({ item }) => {
-          return (
-            <TouchableOpacity //id post object
-              onPress={() => navigation.navigate('Show', { id: item.id })}
-            >
-              <View style={styles.row}>
-                <Text style={styles.title}>{item.title}</Text>
-                <TouchableOpacity onPress={() => deleteBlogPost(item.id)}>
-                  <Feather style={styles.icon} name='trash' />
-                </TouchableOpacity>
-              </View>
-            </TouchableOpacity>
-          )
+  //expirementing with Animation 12/17
+
+  const FadeInView = props => {
+    const fadeAnim = useRef(new Animated.Value(0)).current // Initial value for opacity: 0
+
+    useEffect(() => {
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 900,
+        useNativeDriver: 'true',
+      }).start()
+    }, [fadeAnim])
+
+    return (
+      <Animated.View // Special animatable View
+        style={{
+          ...props.style,
+          opacity: fadeAnim, // Bind opacity to animated value
         }}
-      />
+      >
+        {props.children}
+      </Animated.View>
+    )
+  }
+
+  const deleteRow = (rowMap, rowKey) => {
+    closeRow(rowMap, rowKey)
+    const newData = [state]
+    const prevIndex = state.findIndex(item => item.key === rowKey)
+    newData.splice(prevIndex, 1)
+    //how to update my state???
+    getBlogPosts()
+  }
+
+  const closeRow = (rowMap, rowKey) => {
+    if (rowMap[rowKey]) {
+      rowMap[rowKey].closeRow()
+    }
+  }
+
+  const renderHiddenItem = (data, rowMap) => (
+    <View style={styles.rowBack}>
+      <Text>Left</Text>
+      <TouchableOpacity
+        style={[styles.backRightBtn, styles.backRightBtnLeft]}
+        onPress={() => closeRow(rowMap, data.item.title)}
+      >
+        <Text style={styles.backTextWhite}>Close</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.backRightBtn, styles.backRightBtnRight]}
+        onPress={() => deleteRow(rowMap, data.item.title)}
+      >
+        <Text style={styles.backTextWhite}>Delete</Text>
+      </TouchableOpacity>
     </View>
+  )
+
+  return (
+    <FadeInView>
+      <View>
+        <SwipeListView
+          renderHiddenItem={renderHiddenItem}
+          leftOpenValue={75}
+          rightOpenValue={-150}
+          previewRowKey={'0'}
+          previewOpenValue={-40}
+          previewOpenDelay={3000}
+          data={state}
+          keyExtractor={blogPost => blogPost.title}
+          renderItem={({ item }) => {
+            return (
+              <TouchableHighlight //id post object
+                onPress={() => navigation.navigate('Show', { id: item.id })}
+              >
+                <View style={styles.row}>
+                  <Text style={styles.title}>{item.title}</Text>
+                  <TouchableOpacity onPress={() => deleteBlogPost(item.id)}>
+                    <Feather style={styles.icon} name='trash' />
+                  </TouchableOpacity>
+                </View>
+              </TouchableHighlight>
+            )
+          }}
+        />
+      </View>
+    </FadeInView>
   )
 }
 
@@ -75,7 +144,8 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: 10,
     borderBottomWidth: 1,
-    borderColor: 'gray',
+    borderColor: 'white',
+    backgroundColor: '#CCC',
   },
   title: {
     fontSize: 18,
@@ -85,6 +155,14 @@ const styles = StyleSheet.create({
     fontSize: 28,
     color: '#ffa62b',
     marginRight: 5,
+  },
+  rowFront: {
+    alignItems: 'center',
+    backgroundColor: '#CCC',
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,
+    justifyContent: 'center',
+    height: 50,
   },
   iconAdd: {
     fontSize: 28,
@@ -97,6 +175,34 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     borderRadius: 50,
     marginBottom: 20,
+  },
+  fadeInView: { width: 250, height: 50, backgroundColor: 'powderblue' },
+  rowBack: {
+    alignItems: 'center',
+    backgroundColor: '#DDD',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingLeft: 15,
+  },
+  backRightBtn: {
+    alignItems: 'center',
+    bottom: 0,
+    justifyContent: 'center',
+    position: 'absolute',
+    top: 0,
+    width: 75,
+  },
+  backRightBtnLeft: {
+    backgroundColor: '#ffa62b',
+    right: 75,
+  },
+  backRightBtnRight: {
+    backgroundColor: '#16697a',
+    right: 0,
+  },
+  backTextWhite: {
+    color: '#FFF',
   },
 })
 

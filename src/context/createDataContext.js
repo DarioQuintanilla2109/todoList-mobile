@@ -12,7 +12,7 @@ export default (reducer, actions, initialState) => {
       boundActions[key] = actions[key](dispatch)
     }
 
-    //made our state plus our functions to modify that state available to all children
+    //made our state plus our functions to modify that state available to a5ll children
     return (
       <Context.Provider value={{ state, ...boundActions }}>
         {children}

@@ -34,7 +34,7 @@ const BlogPostForm = ({ onSubmit, initialValues }) => {
   )
 }
 
-//default props => default property values
+//default props => default property values3
 BlogPostForm.defaultProps = {
   initialValues: {
     title: '',
