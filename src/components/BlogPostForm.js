@@ -15,14 +15,16 @@ const BlogPostForm = ({ onSubmit, initialValues }) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-        <Text style={styles.label}> Enter Title: </Text>
+        <Text style={styles.label}> </Text>
         <TextInput
+          placeholder='Title'
           style={styles.input}
           value={title}
           onChangeText={text => setTitle(text)}
         />
-        <Text style={styles.label}> Enter Content: </Text>
+        <Text style={styles.label}> </Text>
         <TextInput
+          placeholder='Enter Content'
           multiline={true}
           style={styles.enterContent}
           value={content}

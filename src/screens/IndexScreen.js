@@ -95,7 +95,7 @@ const IndexScreen = ({ navigation }) => {
       <View>
         <SwipeListView
           renderHiddenItem={renderHiddenItem}
-          leftOpenValue={75}
+          disableRightSwipe={true}
           rightOpenValue={-150}
           previewRowKey={'0'}
           previewOpenValue={-40}
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderBottomWidth: 1,
     borderColor: 'white',
-    backgroundColor: '#CCC',
+    backgroundColor: '#f3f3f3',
   },
   title: {
     fontSize: 18,
@@ -155,14 +155,6 @@ const styles = StyleSheet.create({
     fontSize: 28,
     color: '#ffa62b',
     marginRight: 5,
-  },
-  rowFront: {
-    alignItems: 'center',
-    backgroundColor: '#CCC',
-    borderBottomColor: 'black',
-    borderBottomWidth: 1,
-    justifyContent: 'center',
-    height: 50,
   },
   iconAdd: {
     fontSize: 28,
@@ -179,7 +171,7 @@ const styles = StyleSheet.create({
   fadeInView: { width: 250, height: 50, backgroundColor: 'powderblue' },
   rowBack: {
     alignItems: 'center',
-    backgroundColor: '#DDD',
+    backgroundColor: '#f3f3f3',
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
