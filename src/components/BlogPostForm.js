@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
     padding: 5,
     margin: 5,
     borderRadius: 3,
+    borderColor: 'white',
   },
   label: {
     fontSize: 20,
@@ -70,6 +71,7 @@ const styles = StyleSheet.create({
     padding: 5,
     margin: 5,
     borderRadius: 3,
+    borderColor: 'white',
   },
 })
 

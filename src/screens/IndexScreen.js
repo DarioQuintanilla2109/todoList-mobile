@@ -83,7 +83,7 @@ const IndexScreen = ({ navigation }) => {
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnRight]}
-        onPress={() => deleteRow(rowMap, data.item.title)}
+        onPress={() => deleteBlogPost(data.item.id)}
       >
         <Text style={styles.backTextWhite}>Delete</Text>
       </TouchableOpacity>
