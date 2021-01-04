@@ -5,6 +5,7 @@ import {
   StyleSheet,
   FlatList,
   Button,
+  Modal,
   TouchableOpacity,
   Image,
   Animated,
@@ -55,15 +56,6 @@ const IndexScreen = ({ navigation }) => {
         {props.children}
       </Animated.View>
     )
-  }
-
-  const deleteRow = (rowMap, rowKey) => {
-    closeRow(rowMap, rowKey)
-    const newData = [state]
-    const prevIndex = state.findIndex(item => item.key === rowKey)
-    newData.splice(prevIndex, 1)
-    //how to update my state???
-    getBlogPosts()
   }
 
   const closeRow = (rowMap, rowKey) => {
